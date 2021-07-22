@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: prometheus-sample
+
+---  
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ab3-order
+  namespace: prometheus-sample
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ab3-order
+  template:
+    metadata:
+      labels:
+        app: ab3-order
+    spec:
+      containers:
+      - name: ab3-order
+        image: 525158249545.dkr.ecr.us-west-2.amazonaws.com/ab3-order:v2
+        ports:
+          - containerPort: 8082
+        # resources:
+        #   limits:
+        #     cpu: "50m"
+        #     memory: "100Mi"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ab3-order
+  namespace: prometheus-sample
+spec:
+  selector:
+    app: ab3-order
+  ports:
+  - name: http
+    port: 8082
+    targetPort: 8082
