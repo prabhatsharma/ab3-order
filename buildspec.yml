@@ -24,7 +24,7 @@ phases:
       - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
       - chmod +x kubectl
       - ./kubectl version
-      - sed "s/CODEBUILD_BUILD_NUMBER/$CODEBUILD_BUILD_NUMBER/g" kube-deployment.yaml > kube.yaml
+      - sed "s/CODEBUILD_BUILD_NUMBER/$CODEBUILD_BUILD_NUMBER/g" manifests/kube-deployment.yaml > kube.yaml
       - cat kube.yaml
       - ./kubectl apply -f kube.yaml
 
