@@ -11,8 +11,11 @@ POST /order
 It will send the message to in-memory queue for processing
 
 
-Data generation using hey
+Add orders
 
-hey -n 2000 -q 1 -m POST -T application/json -D testdata.json http://localhost:8082/order
+hey -n 2000 -q 1 -c 1 -m POST -T application/json -D testdata.json http://localhost:8082/order
 
 
+Read from queue
+
+hey -n 20 -q 1 -c 1 -m GET -T application/json -D testdata.json http://localhost:8080/queue/Swimming
