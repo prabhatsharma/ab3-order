@@ -10,14 +10,14 @@ phases:
       - echo Build started on `date`
       - echo Building the Docker image...          
       - docker build -t uniqin-test:latest .
-      - docker tag uniqin-test:latest 525158249545.dkr.ecr.us-west-2.amazonaws.com/prometheus-sample:latest
-      - docker tag uniqin-test:latest 525158249545.dkr.ecr.us-west-2.amazonaws.com/prometheus-sample:v$CODEBUILD_BUILD_NUMBER      
+      - docker tag uniqin-test:latest 525158249545.dkr.ecr.us-west-2.amazonaws.com/ab3-order:latest
+      - docker tag uniqin-test:latest 525158249545.dkr.ecr.us-west-2.amazonaws.com/ab3-order:v$CODEBUILD_BUILD_NUMBER      
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
-      - docker push 525158249545.dkr.ecr.us-west-2.amazonaws.com/prometheus-sample:latest
-      - docker push 525158249545.dkr.ecr.us-west-2.amazonaws.com/prometheus-sample:v$CODEBUILD_BUILD_NUMBER
+      - docker push 525158249545.dkr.ecr.us-west-2.amazonaws.com/ab3-order:latest
+      - docker push 525158249545.dkr.ecr.us-west-2.amazonaws.com/ab3-order:v$CODEBUILD_BUILD_NUMBER
       - export AWS_DEFAULT_REGION=us-west-2
       - aws eks update-kubeconfig --name main
       - aws sts get-caller-identity
