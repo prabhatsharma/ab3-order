@@ -1,6 +1,10 @@
 package orderapi
 
 import (
+	"encoding/json"
+	"fmt"
+	"os"
+
 	"github.com/gin-gonic/gin"
 	"github.com/parnurzeal/gorequest"
 )
@@ -9,11 +13,27 @@ func Post(c *gin.Context) {
 	var order Order
 	c.Bind(&order)
 
-	queueURL := "http://in-memory-queue:8080/queue/" + order.Product
+	fmt.Println("Product is: ", order.Product)
+
+	QueueURL := os.Getenv("QUEUE_URL")
+	fmt.Println("QueueURL is: ", QueueURL)
+
+	if QueueURL == "" {
+		QueueURL = "http://localhost:8080/queue/"
+	}
+
+	queueURL := QueueURL + order.Product
 
 	request := gorequest.New()
 
 	resp, body, err := request.Post(queueURL).Send(order).End()
+
+	if len(err) > 0 {
+		c.JSON(500, gin.H{
+			"message": err,
+		})
+		return
+	}
 
 	var res QResponse
 
@@ -21,7 +41,11 @@ func Post(c *gin.Context) {
 	res.Body = body
 	res.Error = err
 
-	c.JSON(200, body)
+	var jres map[string]interface{}
+
+	json.Unmarshal([]byte(body), &jres)
+
+	c.JSON(200, jres)
 
 }
 

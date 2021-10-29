@@ -9,6 +9,8 @@ FROM 525158249545.dkr.ecr.us-west-2.amazonaws.com/golang:1.16.5-alpine3.13 as bu
 # Create appuser.
 ENV USER=appuser
 ENV UID=10001 
+RUN go env -w GOPROXY=direct  
+RUN apk add --no-cache git
 # See https://stackoverflow.com/a/55757473/12429735RUN 
 RUN adduser \    
     --disabled-password \    
@@ -22,7 +24,7 @@ WORKDIR /go/bin/
 COPY . .
 # Fetch dependencies.
 # Using go get.
-RUN go get -d -v
+RUN go get -v
 # Using go mod.
 # RUN go mod download
 # RUN go mod verify

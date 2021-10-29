@@ -22,13 +22,16 @@ spec:
     spec:
       containers:
       - name: ab3-order
-        image: 525158249545.dkr.ecr.us-west-2.amazonaws.com/ab3-order:v2
+        image: 525158249545.dkr.ecr.us-west-2.amazonaws.com/ab3-order:v3
+        env:
+        - name: QUEUE_URL
+          value: "http://in-memory-queue:8080/queue/"
         ports:
           - containerPort: 8082
-        # resources:
-        #   limits:
-        #     cpu: "50m"
-        #     memory: "100Mi"
+        resources:
+          limits:
+            cpu: "50m"
+            memory: "100Mi"
 
 ---
 
